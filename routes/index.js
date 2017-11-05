@@ -1,14 +1,15 @@
-var express = require('express');
-var router = express.Router();
-var user = require('../models/users')
+'user strict'
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  console.log(req.query.a)
-  
-  user().then(res2 => {
-    res.render('index', { title: res2.body.title });
-  })
-});
+// import home from './home'
+const home = require('./home')
+const users = require('./users')
+const api = require('./api')
 
-module.exports = router;
+module.exports = app => {
+  /* app.use('/', (req, res, next) => {
+    res.redirect('/home')
+  }) */
+  app.use('/', home) 
+  app.use('/api', api)
+  app.use('/login', users)
+}

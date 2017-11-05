@@ -4,11 +4,22 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-var index = require('./routes/index');
-var users = require('./routes/users');
-
+var router = require('./routes')
+ 
 var app = express();
+
+app.all('*', (req, res, next) => {
+	res.header("Access-Control-Allow-Origin", req.headers.origin || '*');
+	res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
+	res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+  res.header("Access-Control-Allow-Credentials", true); //可以带cookies
+	res.header("X-Powered-By", '3.2.1')
+	if (req.method == 'OPTIONS') {
+	  	res.send(200);
+	} else {
+	    next();
+	}
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,8 +33,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
+router(app)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -42,7 +52,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error'); 
 });
-
-app.listen
 
 module.exports = app;
