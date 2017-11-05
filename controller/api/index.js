@@ -1,5 +1,6 @@
 var pool = require('../../mysql')
 var utils = require('../utils')
+var momont = require('moment')
 
 class Api {
     constructor() {
@@ -74,6 +75,45 @@ class Api {
                                 username: data.username
                             })
                         }
+                    }
+                })
+                .catch(next)
+        })
+    }
+
+    postCreate(req, res, next) {
+        let data = req,body
+        pool.getConnection((err, connection) => {
+            if (err) throw err
+            utils.query(`SELECT * FROM posts where title='${data.title}';`, connection)
+                .then(rows => {
+                    if (rows.length) {
+                        let message = 'post is exists'
+                        res.json({
+                            code: 3001,
+                            message
+                        })
+                        return Promise.reject(message)
+                    } else {
+                        return utils.query('SELECT * FROM posts where id=(SELECT MAX(id) FROM posts);', connection)
+                    }
+                })
+                .then(rows => {
+                    let maxID = rows[0].id
+                        data.create_time = moment(data.create_time).format('YYYY-MM-DD HH:mm:ss')
+
+                    let saveData = {
+                        id: ++maxID,
+                        ...data
+                    }
+                    return utils.query('INSERT INTO posts SET ?', connection, saveData)
+                })
+                .then(rows => {
+                    if (rows) {
+                        res.json({
+                            code: 0,
+                            message: 'create post success'
+                        })
                     }
                 })
                 .catch(next)

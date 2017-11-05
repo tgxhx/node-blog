@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.min.css">
+</head>
+<body>
+    <aside id="slide-out" class="side-nav">
+        <li>
+            <div class="user-view">
+                <div class="background">
+                    <img src="images/wmatsui00.jpg">
+                </div>
+                <a href="#!user"><img class="circle" src="images/sophie-marceau-avant-2738254ruoqx.jpg"></a>
+                <a href="#!name"><span class="white-text name"><%= username %></span></a>
+                <a href="#!email"><span class="white-text email"><%= sign %></span></a>
+            </div>
+        </li>
+        <ul id="side-nav-accordion">
+            <li><a href="/"><i class="material-icons">home</i>主页</a></li>
+            <li>
+                <a href="#!" class="link"><i class="material-icons">receipt</i>日期</a>
+                <ul class="submenu" style="display: none;">
+                    <li><a href="#">Photoshop</a></li>
+                    <li><a href="#">HTML</a></li>
+                    <li><a href="#">CSS</a></li>
+                    <li><a href="#">Maquetacion web</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" class="link"><i class="material-icons">account_circle</i>标签</a>
+                <ul class="submenu" style="display: none;">
+                    <li><a href="#">Photoshop</a></li>
+                    <li><a href="#">HTML</a></li>
+                    <li><a href="#">CSS</a></li>
+                    <li><a href="#">Maquetacion web</a></li>
+                </ul>
+            </li>
+            <li><a href="#!"><i class="material-icons">power_settings_new</i>退出</a></li>
+        </ul>
+    </aside>
+    <main class="nav-bar <%= themeColor%> white-text">
+        <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+        <span class="page-title">闷声大发财</span>
+        <div class="search">
+            <span class="search-wrap"><input type="text" class="search-value"></span>
+            <a href="javascript:" class="search-btn"><i class="material-icons">search</i></a>
+        </div>
+    </main>
+    <header class="page-header <%= themeColor%> white-text">
+        <div class="container">
+            <h1 class="page-title">闷声大发财</h1>
+            <h4>这是坠吼的！</h4>
+        </div>
+    </header>
