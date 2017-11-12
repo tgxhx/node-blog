@@ -27,8 +27,8 @@ var staticSrc = ['src/js/**/*.*', 'src/fonts/**/*.*']
 
 gulp.task('server', ["node"], function () {
     var files = [
-        'views2/**/*.ejs',
-        'public2/**/*.*'
+        'views/**/*.ejs',
+        'public/**/*.*'
     ];
 
     //gulp.run(["node"]);
@@ -54,7 +54,7 @@ gulp.task('server', ["node"], function () {
 // 压缩css任务
 gulp.task('css', function () {
     return gulp.src('src/css/*.css')
-        .pipe(gulp.dest('public2/css'))
+        .pipe(gulp.dest('public/css'))
         .pipe(reload({
             stream: true
         }))
@@ -87,7 +87,7 @@ gulp.task('scss', function () {
 //压缩js任务
 gulp.task('js', function () {
     gulp.src(jsSrc)
-        .pipe(gulp.dest('public2/js/'))
+        .pipe(gulp.dest('public/js/'))
         .pipe(reload({
             stream: true
         }))
@@ -96,22 +96,22 @@ gulp.task('js', function () {
 //压缩图片任务
 gulp.task('images', function () {
     gulp.src(imgSrc)
-        .pipe(gulp.dest('public2/images/'))
+        .pipe(gulp.dest('public/images/'))
         .pipe(reload({
             stream: true
         }))
 })
 
-// 复制ejs到node views2任务
+// 复制ejs到node views任务
 gulp.task('copy-ejs', function () {
     gulp.src(ejsSrc, {base: './src'})
-        .pipe(gulp.dest('views2'))
+        .pipe(gulp.dest('views'))
 })
 
 //复制静态文件
 gulp.task('copy-static', function () {
     gulp.src(staticSrc, {base: './src'})
-        .pipe(gulp.dest('public2'))
+        .pipe(gulp.dest('public'))
 })
 
 gulp.task('default', function () {

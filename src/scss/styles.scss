@@ -60,3 +60,25 @@ $color: #fff;
 .edit-submit-btn {
   margin-bottom: 100px;
 }
+
+
+
+
+//post
+.post-body {
+  background-color: #f5f5f5;
+}
+
+.post {
+  display: flex;
+}
+.article {
+  position: relative;
+  top: -115px;
+  padding: 20px;
+  width: 720px;
+  min-height: 1000px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow:0px 0px 19px #bfbfbf;
+}

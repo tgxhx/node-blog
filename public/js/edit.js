@@ -41,6 +41,7 @@ $(function () {
             $('#post_cover').on('change', function (e) {
                 var formData = new FormData()
                 formData.append('avatar', $('#post_cover')[0].files[0])
+                formData.append('test', 'lalala')
                 $.ajax({
                     url: 'http://localhost:3000/upload',
                     type: 'post',

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/css/editormd.min.css">
+    <link rel="stylesheet" href="/css/styles.min.css">
+</head>
+<body class="post-body">
+<%- include('common/header.ejs') %>
+<section class="container post">
+    <article id="article" class="article">
+        <h1><%= title %></h1>
+        <div class="info"><%= create_time %></div>
+        <div class="content">
+            <div class="markdown-body editormd-preview-container">
+                    <%- html %>
+                </div>
+        </div>
+    </article>
+    <aside></aside>
+</section>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/materialize/0.100.2/js/materialize.min.js"></script>
+<script src="/js/public.js"></script>
+<%- include('common/footer.ejs') %>

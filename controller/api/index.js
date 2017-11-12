@@ -82,7 +82,8 @@ class Api {
     }
 
     postCreate(req, res, next) {
-        let data = req,body
+        let data = req.body
+        let maxID
         pool.getConnection((err, connection) => {
             if (err) throw err
             utils.query(`SELECT * FROM posts where title='${data.title}';`, connection)
@@ -99,8 +100,7 @@ class Api {
                     }
                 })
                 .then(rows => {
-                    let maxID = rows[0].id
-                        data.create_time = moment(data.create_time).format('YYYY-MM-DD HH:mm:ss')
+                    maxID = rows[0].id
 
                     let saveData = {
                         id: ++maxID,

@@ -34,3 +34,28 @@
       margin: 0; }
   .login-register button[type=submit] {
     margin-top: 10px; }
+
+.edit-title input {
+  padding-left: 15px; }
+
+.edit-submit-btn {
+  margin-bottom: 100px; }
+
+.post-body {
+  background-color: #f5f5f5; }
+
+.post {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.article {
+  position: relative;
+  top: -115px;
+  padding: 20px;
+  width: 720px;
+  min-height: 1000px;
+  border-radius: 5px;
+  background-color: #fff;
+  -webkit-box-shadow: 0px 0px 19px #bfbfbf;
+          box-shadow: 0px 0px 19px #bfbfbf; }

@@ -1,8 +1,11 @@
 $(function () {
+    var $window = $(window),
+        $navBar = $('.nav-bar')
+
     // Initialize collapse button
     $(".button-collapse").sideNav();
 
-    var docCookies = {
+    window.docCookies = {
         getItem: function (sKey) {
             return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
         },
@@ -46,7 +49,6 @@ $(function () {
         }
     };
 
-
     if (docCookies.getItem('username') && location.href.indexOf('login') > -1) {
         location.href = '/'
     }
@@ -54,5 +56,17 @@ $(function () {
     $('#side-nav-accordion').find('.link').on('click', function (e) {
         $('#side-nav-accordion li > .submenu').slideUp()
         $(this).next().stop(true, true).slideToggle()
+    })
+
+    $window.on('scroll', function () {
+        if ($window.scrollTop()) {
+            $navBar.addClass('fixed')
+        } else{
+            $navBar.removeClass('fixed')
+        }
+    })
+
+    $('.search-btn').on('click', function () {
+        $(this).siblings('.search-wrap').toggleClass('focus')
     })
 })
