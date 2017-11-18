@@ -15,60 +15,24 @@
         <section class="container home">
         <div class="row">
             <div class="col s12 m12"> 
-              <div class="card">
-                <div class="card-image">
-                  <img src="images/1-131030140532.jpg">
-                  <span class="card-title">Card Title</span>
-                </div>
-                <div class="card-content">  
-                  <p>I am a very simple card. I am good at containing small bits of information.
-                  I am convenient because I require little markup to use effectively...
-                    <a href="#">show more</a>
-                </p>
-                </div>
-                <div class="card-action right-align">
-                  <a href="#">This is a link</a>
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-image">
-                  <img src="images/1-131030140532.jpg">
-                  <span class="card-title">Card Title</span>
-                </div>
-                <div class="card-content">
-                  <p>I am a very simple card. I am good at containing small bits of information.
-                  I am convenient because I require little markup to use effectively.</p>
-                </div>
-                <div class="card-action right-align"> 
-                  <a href="#">This is a link</a> 
-                </div>  
-              </div>
-              <div class="card">
-                <div class="card-image">
-                  <img src="images/1-131030140532.jpg">
-                  <span class="card-title">Card Title</span> 
-                </div>
-                <div class="card-content">
-                  <p>I am a very simple card. I am good at containing small bits of information.
-                    I am convenient because I require little markup to use effectively.</p>
-                </div>
-                <div class="card-action right-align">
-                  <a href="#">This is a link</a>
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-image">
-                  <img src="images/1-131030140532.jpg">
-                  <span class="card-title">Card Title</span>
-                </div>
-                <div class="card-content">
-                  <p>I am a very simple card. I am good at containing small bits of information.
-                    I am convenient because I require little markup to use effectively.</p>
-                </div>
-                <div class="card-action right-align">
-                  <a href="#">This is a link</a>
-                </div>
-              </div>  
+              <% for(var i = 0; i < posts.length; i++) { %>
+                <div class="card">
+                    <div class="card-image">
+                      <img src="<%= posts[i].cover %>">
+                      <a href="/post/<%= posts[i].id %>"><span class="card-title"><%= posts[i].title %></span></a>
+                    </div>
+                    <div class="card-content">  
+                      <p><%= postshow100(posts[i].markdown.toString()) %>...
+                        <a href="/post/<%= posts[i].id %>">show more</a>
+                    </p>
+                    </div>
+                    <div class="card-action">
+                      <a href="#" class="<%= randomColor() %> btn">tag1</a>
+                      <a href="#" class="<%= randomColor() %> btn">tag2</a>
+                      <a href="#" class="<%= randomColor() %> btn">tag3</a>
+                    </div>  
+                  </div>
+              <% } %>
             </div>
           </div>
     </section>

@@ -1,6 +1,7 @@
 var pool = require('../../mysql')
 var utils = require('../utils')
 var momont = require('moment')
+var base64 = require('base-64')
 
 class Api {
     constructor() {
@@ -66,7 +67,8 @@ class Api {
                             })
                             return Promise.reject(message)
                         } else {
-                            res.cookie('username', data.username, {
+                            var encodeData = base64.encode(data.username)
+                            res.cookie('username', encodeData, {
                                 expires: new Date(Date.now() + 60 * 60 * 1000),
                             })
                             res.json({

@@ -10,13 +10,13 @@ var storage = multer.diskStorage({
     },
     filename(req, file, cb) {
         var extname = file.originalname.split('.').pop()
-        cb(null, `${file.fieldname}-${Date.now()}.${extname}`)
+        cb(null, `${file.fieldname}_${Date.now()}.${extname}`)
     }
 })
 
 var uploadmulter = multer({ storage })
 
 
-router.post('/', uploadmulter.single('avatar'), upload.uploadFile)
+router.post('/', uploadmulter.single('image'), upload.uploadFile)
 
 module.exports = router

@@ -40,8 +40,7 @@ $(function () {
 
             $('#post_cover').on('change', function (e) {
                 var formData = new FormData()
-                formData.append('avatar', $('#post_cover')[0].files[0])
-                formData.append('test', 'lalala')
+                formData.append('file', $('#post_cover')[0].files[0])
                 $.ajax({
                     url: 'http://localhost:3000/upload',
                     type: 'post',
@@ -69,9 +68,10 @@ $(function () {
                 author = docCookies.getItem('username'),
                 tags = $('.edit-tags input').val().trim(),
                 create_time = Date.now(),
+                cover = $('#post_cover').attr('data-img'),
                 markdown = testEditor.getMarkdown(),
                 html = testEditor.getPreviewedHTML()
-            return { title, author, tags, create_time, markdown, html }
+            return { title, author, tags, create_time, cover, markdown, html }
         }
     }
 
