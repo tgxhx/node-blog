@@ -68,7 +68,7 @@ class Api {
                             return Promise.reject(message)
                         } else {
                             var encodeData = base64.encode(data.username)
-                            res.cookie('username', encodeData, {
+                            res.cookie('username', data.username, {
                                 expires: new Date(Date.now() + 60 * 60 * 1000),
                             })
                             res.json({

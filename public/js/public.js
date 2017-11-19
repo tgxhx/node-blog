@@ -1,3 +1,31 @@
+$.extend({
+    request(url, data, type = 'post', obj) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url,
+                data,
+                type,
+                ...obj
+            })
+            .done(res => {
+                resolve(res)
+            })
+            .fail(err => {
+                reject(err)
+            })
+        })
+    }
+})
+
+var baseUrl = location.origin.indexOf('localhost') > -1 ? 'http://localhost:3000' : location.origin
+
+window.Api = {
+    login: baseUrl + '/api/login',
+    register: baseUrl + 'api/register',
+    createPost: baseUrl + '/api/posts/create',
+    uploadFile: baseUrl + '/upload'
+}
+
 $(function () {
     var $window = $(window),
         $navBar = $('.nav-bar')
@@ -48,7 +76,7 @@ $(function () {
             return aKeys;
         }
     };
-
+ 
     if (docCookies.getItem('username') && location.href.indexOf('login') > -1) {
         location.href = '/'
     }

@@ -24,18 +24,13 @@ class LoginRegister {
         }
 
         var data = { username, password }
-
-        $.ajax({
-            url: 'http://localhost:3000/api/register',
-            type: 'post',
-            data: data,
-            success: function (res) {
+        $.request(APi.register, data)
+            .then(res => {
                 console.log(res)
-            },
-            success: function (err) {
+            })
+            .catch(err => {
                 console.log(err)
-            }
-        })
+            })
     }
 
     login() {
@@ -44,11 +39,8 @@ class LoginRegister {
 
         var data = { username, password }
 
-        $.ajax({
-            url: 'http://localhost:3000/api/login',
-            type: 'post',
-            data: data,
-            success: function (res) {
+        $.request(Api.login, data)
+            .then(res => {
                 if (res.code === 0) {
                     location.href = '/'
                 } else {
@@ -56,12 +48,13 @@ class LoginRegister {
                     $('#modal1 .modal-content p').text(message)
                     $('#modal1').modal('open');
                 }
-            },
-            error: function (err) {
+            })
+            .catch(err => {
                 console.log(err)
-            }
-        })
+            })
     }
 }
 
-new LoginRegister()
+$(function () {
+    new LoginRegister()
+})

@@ -18,11 +18,8 @@ $(function () {
         bindEvent() {
             $('.edit-submit-btn a').on('click', (e) => {
                 let data = this.getContent()
-                $.ajax({
-                    url: 'http://localhost:3000/api/posts/create',
-                    type: 'post',
-                    data,
-                    success: res => {
+                $.request(Api.createPost, data)
+                    .then(res => {
                         if (res.code === 0) {
                             $('#modal1 .modal-content h4').text('Success')
                             $('#modal1 .modal-content p').text(res.message)
@@ -31,25 +28,21 @@ $(function () {
                             $('#modal1 .modal-content p').text(res.Error)
                             $('#modal1').modal('open');
                         }
-                    },
-                    error: err => {
+                    })
+                    .catch(err => {
                         console.log(err)
-                    }
-                })
+                    })
             })
 
             $('#post_cover').on('change', function (e) {
                 var formData = new FormData()
-                formData.append('file', $('#post_cover')[0].files[0])
-                $.ajax({
-                    url: 'http://localhost:3000/upload',
-                    type: 'post',
-                    data: formData,
+                formData.append('image', $('#post_cover')[0].files[0])
+                $.request(Api.uploadFile, formData, undefined, {
                     cache: false,
                     processData: false,
                     contentType: false
                 })
-                .done(function (res) {
+                .then(res => {
                     if (res.code === 0) {
                         $('#post_cover').attr('data-img', res.path)
                         $('#modal1 .modal-content h4').text('Success')
@@ -57,7 +50,7 @@ $(function () {
                         $('#modal1').modal('open');
                     }
                 })
-                .fail(function (err) {
+                .catch(err => {
                     console.log(err)
                 })
             })
