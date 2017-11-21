@@ -5,7 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var router = require('./routes')
- 
+var fs = require('fs')
+
 var app = express();
 
 app.all('*', (req, res, next) => {
@@ -13,7 +14,10 @@ app.all('*', (req, res, next) => {
 	res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
 	res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
   res.header("Access-Control-Allow-Credentials", true); //可以带cookies
-	res.header("X-Powered-By", '3.2.1')
+  res.header("X-Powered-By", '3.2.1')
+  if (res.xhr) {
+    console.log('ajax request.')
+  }
 	if (req.method == 'OPTIONS') {
 	  	res.send(200);
 	} else {
@@ -21,13 +25,17 @@ app.all('*', (req, res, next) => {
 	}
 });
 
-// view engine setup
+// view engine setupgit
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+//logs
+var accessLogFile = fs.createWriteStream(path.join(__dirname,'logs/access.log'), {flags: 'a'})
+var errorLogFile = fs.createWriteStream(path.join(__dirname,'logs/error.log'), {flags: 'a'})
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+app.use(logger('dev', {stream: accessLogFile})); 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
