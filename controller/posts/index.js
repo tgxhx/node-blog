@@ -1,5 +1,6 @@
 var pool = require('../../mysql')
 var utils = require('../utils')
+var moment = require('moment')
 
 class Post {
     constructor() {
@@ -16,7 +17,7 @@ class Post {
                         res.render('post', {
                             title: obj.title,
                             username: obj.author,
-                            create_time: obj.create_time,
+                            create_time: moment(+obj.create_time).format('YYYY-MM-DD'),
                             html: obj.html,
                             sign: 'sing2',
                             themeColor: 'teal'

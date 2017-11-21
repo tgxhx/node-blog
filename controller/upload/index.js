@@ -5,7 +5,7 @@ class Upload {
 
     uploadFile(req, res, next) {
         try {
-            var path = 'uploads/' + req.file.filename
+            var path = '/uploads/' + req.file.filename
         } catch (error) {
             console.log(error)
         }
