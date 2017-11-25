@@ -23,6 +23,7 @@ window.Api = {
     login: baseUrl + '/api/login',
     register: baseUrl + 'api/register',
     createPost: baseUrl + '/api/posts/create',
+    editPost: baseUrl + '/api/posts/edit',
     uploadFile: baseUrl + '/upload'
 }
 

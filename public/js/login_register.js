@@ -24,7 +24,7 @@ class LoginRegister {
         }
 
         var data = { username, password }
-        $.request(APi.register, data)
+        $.request(Api.register, data)
             .then(res => {
                 console.log(res)
             })

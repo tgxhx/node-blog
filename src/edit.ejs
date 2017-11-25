@@ -15,10 +15,18 @@
     <div class="wrapper">
         <div class="container" style="width: 80%; max-width: 80%">
             <div class="edit-title">
-                <input type="text" placeholder="Title">
+                <% if (locals.data) { %>
+                    <input type="text" placeholder="Title" value="<%= data.title %>">       
+                <% } else { %>
+                    <input type="text" placeholder="Title">
+                <% } %>
             </div>
             <div class="edit-tags">
-                <input type="text" placeholder="Tags">
+                <% if (locals.data) { %>
+                    <input type="text" placeholder="Tags" value="<%= data.tags %>">       
+                <% } else { %>
+                    <input type="text" placeholder="Tags">
+                <% } %>
             </div>
             <div class="file-field input-field">
                 <div class="btn">
@@ -30,7 +38,11 @@
                 </div>
               </div>
             <div id="editormd">
-                <textarea style="display:none;"></textarea>
+                <% if (locals.data) { %>
+                    <textarea style="display:none;"><%= data.markdown %></textarea>
+                <% } else { %>
+                    <textarea style="display:none;"></textarea>
+                <% } %>
             </div>
             <div class="edit-submit-btn right-align">
                 <a class="waves-effect waves-light btn">提交</a>
@@ -47,9 +59,17 @@
             <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
         </div>
     </div>
+
+    <% if (locals.data) { %>
+        <script>
+            var Is_Edit_Post = true,
+                Post_Id = <%= data.id %>
+
+        </script>
+    <% } %>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script src="js/editormd.min.js"></script>
+    <script src="/js/editormd.min.js"></script>
     <script src="https://cdn.bootcss.com/materialize/0.100.2/js/materialize.min.js"></script>
-    <script src="js/public.js"></script>
-    <script src="js/edit.js"></script>
+    <script src="/js/public.js"></script>
+    <script src="/js/edit.js"></script>
     <%- include('common/footer.ejs') %>

@@ -17,8 +17,17 @@ $(function () {
 
         bindEvent() {
             $('.edit-submit-btn a').on('click', (e) => {
-                let data = this.getContent()
-                $.request(Api.createPost, data)
+                let data, url
+                if (Is_Edit_Post) {
+                    data = this.getContent()
+                    delete data.create_time
+                    data.id = Post_Id
+                    url = Api.editPost
+                } else {
+                    data = this.getContent()
+                    url = Api.createPost
+                }
+                $.request(url, data)
                     .then(res => {
                         if (res.code === 0) {
                             $('#modal1 .modal-content h4').text('Success')
@@ -42,17 +51,17 @@ $(function () {
                     processData: false,
                     contentType: false
                 })
-                .then(res => {
-                    if (res.code === 0) {
-                        $('#post_cover').attr('data-img', res.path)
-                        $('#modal1 .modal-content h4').text('Success')
-                        $('#modal1 .modal-content p').text(res.message)
-                        $('#modal1').modal('open');
-                    }
-                })
-                .catch(err => {
-                    console.log(err)
-                })
+                    .then(res => {
+                        if (res.code === 0) {
+                            $('#post_cover').attr('data-img', res.path)
+                            $('#modal1 .modal-content h4').text('Success')
+                            $('#modal1 .modal-content p').text(res.message)
+                            $('#modal1').modal('open');
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
             })
         }
 

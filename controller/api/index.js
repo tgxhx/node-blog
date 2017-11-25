@@ -121,6 +121,35 @@ class Api {
                 .catch(next)
         })
     }
+
+    postEdit(req, res, next) {
+        let data = req.body,
+            str = '',
+            updateArr = []
+
+        for (let i in data) {
+            if (data[i] && i !== 'id') {
+                str += `${i} = ?, `
+                updateArr.push(data[i])
+            }
+        }
+        str = str.slice(0, str.length - 2)
+        updateArr.push(+data.id)
+        let sql = `UPDATE posts SET ${str} WHERE id = ?` 
+        pool.getConnection((err, connection) => {
+            if (err) throw err
+            utils.query(sql, connection, updateArr)
+                .then(rows => {
+                    if (rows) {
+                        res.json({
+                            code: 0,
+                            message: 'update post success'
+                        })
+                    }
+                })
+                .catch(next)
+        })
+    }
 }
 
 module.exports = new Api() 

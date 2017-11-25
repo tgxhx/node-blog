@@ -11,4 +11,7 @@ router.post('/login', api.login)
 //文章上传接口
 router.post('/posts/create', api.postCreate)
 
+//文章修改接口
+router.post('/posts/edit', api.postEdit)
+
 module.exports = router;    

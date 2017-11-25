@@ -30,6 +30,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 //logs
+if (!fs.existsSync('logs')) {
+  fs.mkdirSync('logs') 
+}
 var accessLogFile = fs.createWriteStream(path.join(__dirname,'logs/access.log'), {flags: 'a'})
 var errorLogFile = fs.createWriteStream(path.join(__dirname,'logs/error.log'), {flags: 'a'})
 
