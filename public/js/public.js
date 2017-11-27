@@ -21,7 +21,7 @@ var baseUrl = location.origin.indexOf('localhost') > -1 ? 'http://localhost:3000
 
 window.Api = {
     login: baseUrl + '/api/login',
-    register: baseUrl + 'api/register',
+    register: baseUrl + '/api/register',
     createPost: baseUrl + '/api/posts/create',
     editPost: baseUrl + '/api/posts/edit',
     uploadFile: baseUrl + '/upload'

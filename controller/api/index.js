@@ -15,7 +15,7 @@ class Api {
             utils.query(`select * from users where username='${data.username}';`, connection)
                 .then(rows => {
                     if (rows.length) {
-                        res.json({
+                        res.send({
                             code: 3001,
                             message: 'username is exists'
                         })
@@ -34,7 +34,7 @@ class Api {
                 })
                 .then(rows => {
                     if (rows) {
-                        res.json({
+                        res.send({
                             code: 0,
                             message: 'ok'
                         })
@@ -50,33 +50,35 @@ class Api {
             if (err) throw err
             utils.query(`select * from users where username='${data.username}';`, connection)
                 .then(rows => {
-                    if (!rows.length) {
-                        let message = 'username does not exist'
-                        res.json({
-                            code: 3004,
-                            message 
-                        })
-                        return Promise.reject(message)
-                    } else {
-                        var password = rows[0].password
-                        if (password !== data.password) {
-                            let message = 'password is incorrect'
-                            res.json({
-                                code: 3005,
+                    try {
+                        if (!rows.length) {
+                            let message = 'username does not exist'
+                            res.send({
+                                code: 3004,
                                 message
                             })
-                            return Promise.reject(message)
                         } else {
-                            var encodeData = base64.encode(data.username)
-                            res.cookie('username', data.username, {
-                                expires: new Date(Date.now() + 60 * 60 * 1000),
-                            })
-                            res.json({
-                                code: 0,
-                                message: 'login success',
-                                username: data.username
-                            })
+                            let password = rows[0].password
+                            if (password !== data.password) {
+                                let message = 'password is incorrect'
+                                res.send({
+                                    code: 3005,
+                                    message
+                                })
+                            } else {
+                                let encodeData = base64.encode(data.username)
+                                res.cookie('username', encodeData, {
+                                    expires: new Date(Date.now() + 60 * 60 * 1000),
+                                })
+                                res.send({
+                                    code: 0,
+                                    message: 'login success',
+                                    username: data.username
+                                })
+                            }
                         }
+                    } catch (error) {
+                        return Promise.reject(error)
                     }
                 })
                 .catch(next)
@@ -92,11 +94,10 @@ class Api {
                 .then(rows => {
                     if (rows.length) {
                         let message = 'post is exists'
-                        res.json({
+                        return res.send({
                             code: 3001,
                             message
                         })
-                        return Promise.reject(message)
                     } else {
                         return utils.query('SELECT * FROM posts where id=(SELECT MAX(id) FROM posts);', connection)
                     }
@@ -112,7 +113,7 @@ class Api {
                 })
                 .then(rows => {
                     if (rows) {
-                        res.json({
+                        res.send({
                             code: 0,
                             message: 'create post success'
                         })
@@ -141,7 +142,7 @@ class Api {
             utils.query(sql, connection, updateArr)
                 .then(rows => {
                     if (rows) {
-                        res.json({
+                        res.send({
                             code: 0,
                             message: 'update post success'
                         })

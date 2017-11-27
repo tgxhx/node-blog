@@ -10,7 +10,7 @@ class Upload {
             console.log(error)
         }
         
-        res.json({
+        res.send({
             code: 0,
             message: 'upload successed!',
             path
