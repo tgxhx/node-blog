@@ -66,7 +66,14 @@
                 Post_Id = <%= data.id %>
 
         </script>
+    <% } else { %>
+        <script>
+            var Is_Edit_Post = false,
+                Post_Id = null
+
+        </script>
     <% } %>
+    
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="/js/editormd.min.js"></script>
     <script src="https://cdn.bootcss.com/materialize/0.100.2/js/materialize.min.js"></script>
