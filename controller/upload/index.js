@@ -1,20 +1,30 @@
+var request = require('request')
+var fs = require('fs')
+var path = require('path')
+
 class Upload {
     constructor() {
 
     }
 
     uploadFile(req, res, next) {
-        try {
-            var path = '/uploads/' + req.file.filename
-        } catch (error) {
-            console.log(error)
-        }
-        
-        res.send({
-            code: 0,
-            message: 'upload successed!',
-            path
-        })
+        request.post({url:'http://127.0.0.1:8888/upload', formData: {image: fs.createReadStream(path.join(__dirname,'../../public/uploads/' + req.file.filename)),}}, function optionalCallback(err, httpResponse, body) {
+            if (err) {
+              return console.error('upload failed:', err);
+            }
+            try {
+                body = JSON.parse(body)
+                console.log('Upload successful!  Server responded with:', body);
+    
+                res.send({
+                    code: 0,
+                    message: 'upload successed!',
+                    path: body.path
+                })
+            } catch (error) {
+                console.error(error)
+            }
+          });
     }
 }
 
