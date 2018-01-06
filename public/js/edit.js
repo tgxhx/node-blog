@@ -33,10 +33,10 @@ $(function () {
             if (res.code === 0) {
               $('#modal1 .modal-content h4').text('Success')
               $('#modal1 .modal-content p').text(res.message)
-              $('#modal1').modal('open');
+              $('#modal1').modal('open')
             } else {
               $('#modal1 .modal-content p').text(res.Error)
-              $('#modal1').modal('open');
+              $('#modal1').modal('open')
             }
           })
           .catch(err => {
@@ -57,7 +57,7 @@ $(function () {
               $('#post_cover').attr('data-img', res.path)
               $('#modal1 .modal-content h4').text('Success')
               $('#modal1 .modal-content p').text(res.message)
-              $('#modal1').modal('open');
+              $('#modal1').modal('open')
             }
           })
           .catch(err => {
@@ -88,4 +88,4 @@ $(function () {
   }
   
   new Edit()
-});
+})
