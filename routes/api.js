@@ -8,6 +8,9 @@ router.post('/register', api.register)
 //登录接口
 router.post('/login', api.login)
 
+//登录状态
+router.post('/is-login', api.isLogin)
+
 //文章上传接口
 router.post('/posts/create', api.postCreate)
 
