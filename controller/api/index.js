@@ -6,156 +6,161 @@ var uuidv1 = require('uuid/v1')
 
 class Api {
   constructor() {
-  
   }
   
   register(req, res, next) {
     var data = req.body
-    pool.getConnection((err, connection) => {
+    pool.getConnection(async (err, connection) => {
       if (err) throw err
-      utils.query(`select * from users where username='${data.username}';`, connection)
-        .then(rows => {
-          if (rows.length) {
-            res.send({
-              code: 3001,
-              message: 'username is exists'
-            })
-            return Promise.reject('username is exists')
-          } else {
-            return utils.query('SELECT * FROM `users` where id=(SELECT MAX(id) FROM users);', connection)
-          }
+      try {
+        const rows = await utils.query(`select * from users where username='${data.username}';`, connection)
+        if (rows.length) {
+          return res.send({
+            code: 3001,
+            message: 'username is exists'
+          })
+        }
+        
+        const rows1 = await utils.query('SELECT * FROM `users` where id=(SELECT MAX(id) FROM users);', connection)
+        var maxID = rows1[0].id
+        var dataInsert = {
+          id: ++maxID,
+          ...req.body
+        }
+        
+        const rows2 = await utils.query('INSERT INTO users SET ?', connection, dataInsert)
+        if (rows) {
+          return res.send({
+            code: 0,
+            message: 'ok'
+          })
+        }
+        
+        return res.send({
+          code: 3008,
+          message: 'something is wrong'
         })
-        .then(rows => {
-          var maxID = rows[0].id
-          var data = {
-            id: ++maxID,
-            ...req.body
-          }
-          return utils.query('INSERT INTO users SET ?', connection, data)
-        })
-        .then(rows => {
-          if (rows) {
-            res.send({
-              code: 0,
-              message: 'ok'
-            })
-          }
-        })
-        .catch(next)
+      } catch (e) {
+        throw (e)
+        next(e)
+      }
     })
   }
   
   login(req, res, next) {
     var data = req.body
     var access_token
-    pool.getConnection((err, connection) => {
+    pool.getConnection(async (err, connection) => {
       if (err) throw err
-      utils.query(`select * from users where username='${data.username}';`, connection)
-        .then(rows => {
-          try {
-            if (!rows.length) {
-              let message = 'username does not exist'
-              res.send({
-                code: 3004,
-                message
-              })
-            } else {
-              let password = rows[0].password
-              if (password !== data.password) {
-                let message = 'password is incorrect'
-                res.send({
-                  code: 3005,
-                  message
-                })
-              } else {
-                access_token = uuidv1()
-                let time = Date.now()
-                return utils.query('UPDATE users SET token = ?, last_login = ? WHERE username = ?', connection, [access_token, time, data.username])
-              }
-            }
-          } catch (error) {
-            return Promise.reject(error)
-          }
+      try {
+        const rows = await utils.query(`select * from users where username='${data.username}';`, connection)
+        if (!rows.length) {
+          let message = 'username does not exist'
+          return res.send({
+            code: 3004,
+            message
+          })
+        }
+        
+        let password = rows[0].password
+        if (password !== data.password) {
+          let message = 'password is incorrect'
+          return res.send({
+            code: 3005,
+            message
+          })
+        }
+        
+        access_token = uuidv1()
+        let time = Date.now()
+        const rowsUpdate = await utils.query('UPDATE users SET token = ?, last_login = ? WHERE username = ?', connection, [access_token, time, data.username])
+        if (rowsUpdate) {
+          return res.send({
+            code: 0,
+            message: 'login success',
+            username: data.username,
+            token: access_token
+          })
+        }
+        
+        return res.send({
+          code: 3008,
+          message: 'something is wrong'
         })
-        .then(rows => {
-          if (rows) {
-            res.send({
-              code: 0,
-              message: 'login success',
-              username: data.username,
-              token: access_token
-            })
-          }
-        })
-        .catch(next)
+      } catch (e) {
+        throw e
+        next(e)
+      }
     })
   }
   
   isLogin(req, res, next) {
     let token = req.query.token
-    pool.getConnection((err, connection) => {
+    pool.getConnection(async (err, connection) => {
       if (err) throw err
-      utils.query(`SELECT * FROM users where token='${token}'`, connection)
-        .then(rows => {
-          if (rows.length) {
-            var lastLogin = rows[0].last_login
-            var now = Date.now()
-            if (now - lastLogin > 1000 * 60 * 10) {
-              return res.send({
-                code: 3006,
-                message: 'is time out'
-              })
-            } else {
-              return res.send({
-                code: 0,
-                message: 'is login'
-              })
-            }
-          } else {
-            return res.send({
-              code: 3007,
-              message: 'is not login'
-            })
-          }
+      try {
+        const rows = await utils.query(`SELECT * FROM users where token='${token}'`, connection)
+        if (!rows.length) {
+          return res.send({
+            code: 3007,
+            message: 'is not login'
+          })
+        }
+        
+        var lastLogin = rows[0].last_login
+        var now = Date.now()
+        if (now - lastLogin > 1000 * 60 * 10) {
+          return res.send({
+            code: 3006,
+            message: 'is time out'
+          })
+        }
+        
+        return res.send({
+          code: 0,
+          message: 'is login'
         })
+      } catch (e) {
+        throw e
+        next(e)
+      }
     })
   }
   
   postCreate(req, res, next) {
     let data = req.body
     let maxID
-    pool.getConnection((err, connection) => {
+    pool.getConnection(async (err, connection) => {
       if (err) throw err
-      utils.query(`SELECT * FROM posts where title='${data.title}';`, connection)
-        .then(rows => {
-          if (rows.length) {
-            let message = 'post is exists'
-            return res.send({
-              code: 3001,
-              message
-            })
-          } else {
-            return utils.query('SELECT * FROM posts where id=(SELECT MAX(id) FROM posts);', connection)
-          }
-        })
-        .then(rows => {
-          maxID = rows[0].id
-          
-          let saveData = {
-            id: ++maxID,
-            ...data
-          }
-          return utils.query('INSERT INTO posts SET ?', connection, saveData)
-        })
-        .then(rows => {
-          if (rows) {
-            res.send({
-              code: 0,
-              message: 'create post success'
-            })
-          }
-        })
-        .catch(next)
+      try {
+        const rows = await utils.query(`SELECT * FROM posts where title='${data.title}';`, connection)
+        if (rows.length) {
+          let message = 'post is exists'
+          return res.send({
+            code: 3001,
+            message
+          })
+        }
+        
+        const rows1 = await utils.query('SELECT * FROM posts where id=(SELECT MAX(id) FROM posts);', connection)
+        maxID = rows1[0].id
+        
+        let saveData = {
+          id: ++maxID,
+          ...data
+        }
+        
+        const rows2 = await utils.query('INSERT INTO posts SET ?', connection, saveData)
+        if (rows2) {
+          return res.send({
+            code: 0,
+            message: 'create post success'
+          })
+        }
+      } catch (e) {
+        throw e
+        next(e)
+      }
     })
   }
   
@@ -173,18 +178,25 @@ class Api {
     str = str.slice(0, str.length - 2)
     updateArr.push(+data.id)
     let sql = `UPDATE posts SET ${str} WHERE id = ?`
-    pool.getConnection((err, connection) => {
+    pool.getConnection(async (err, connection) => {
       if (err) throw err
-      utils.query(sql, connection, updateArr)
-        .then(rows => {
-          if (rows) {
-            res.send({
-              code: 0,
-              message: 'update post success'
-            })
-          }
+      try {
+        const rows = await utils.query(sql, connection, updateArr)
+        if (rows) {
+          return res.send({
+            code: 0,
+            message: 'update post success'
+          })
+        }
+        
+        return res.send({
+          code: 3009,
+          message: 'something is wrong'
         })
-        .catch(next)
+      } catch (e) {
+        throw e
+        next(e)
+      }
     })
   }
 }
